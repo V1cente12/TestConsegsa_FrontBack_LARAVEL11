@@ -36,7 +36,32 @@
                 </div>
 
                 <div class="card-body">
-                    <br><br>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID Cliente</th>
+                                <th>Código Cliente</th>
+                                <th>Razón Social</th>
+                                <th>NIT/CI</th>
+                                <th>Fecha Creación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($clientes as $cliente)
+                                <tr>
+                                    <td>{{ $cliente->id_cliente }}</td>
+                                    <td>{{ $cliente->codigo_cliente }}</td>
+                                    <td>{{ $cliente->razon_social }}</td>
+                                    <td>{{ $cliente->nit_ci }}</td>
+                                    <td>{{ $cliente->fecha_cre }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">No hay clientes registrados.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -57,7 +82,34 @@
                 </div>
 
                 <div class="card-body">
-                    <br><br>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID Memo</th>
+                                <th>Número de Memo</th>
+                                <th>Póliza</th>
+                                <th>ID Cliente</th>
+                                <th>Prima Total</th>
+                                <th>Vigencia Desde</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($memos as $memo)
+                                <tr>
+                                    <td>{{ $memo->id_memo }}</td>
+                                    <td>{{ $memo->nro_memo }}</td>
+                                    <td>{{ $memo->poliza }}</td>
+                                    <td>{{ $memo->id_cliente }}</td>
+                                    <td>{{ $memo->prima_total }}</td>
+                                    <td>{{ $memo->vigencia_desde }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center">No hay memos registrados.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -78,7 +130,32 @@
                 </div>
 
                 <div class="card-body">
-                    <br><br>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID Siniestro</th>
+                                <th>Número de Siniestro</th>
+                                <th>ID Memo</th>
+                                <th>Fecha del Siniestro</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($siniestros as $siniestro)
+                                <tr>
+                                    <td>{{ $siniestro->id_siniestro }}</td>
+                                    <td>{{ $siniestro->nro_siniestro }}</td>
+                                    <td>{{ $siniestro->id_memo }}</td>
+                                    <td>{{ $siniestro->fecha_sin }}</td>
+                                    <td>{{ $siniestro->descripcion }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">No hay siniestros registrados.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -98,6 +175,61 @@
                     <br>
                     Tabla: clientes, memos, siniestros
                 </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID Cliente</th>
+                                <th>Razón Social</th>
+                                <th>Código Cliente</th>
+                                <th>Número de Memo</th>
+                                <th>Póliza</th>
+                                <th>Vigencia Hasta</th>
+                                <th>Número de Siniestro</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($clientes as $cliente)
+                                @forelse ($cliente->memos as $memo)
+                                    @forelse ($memo->siniestros as $siniestro)
+                                        <tr>
+                                            <td>{{ $cliente->id_cliente }}</td>
+                                            <td>{{ $cliente->razon_social }}</td>
+                                            <td>{{ $cliente->codigo_cliente }}</td>
+                                            <td>{{ $memo->nro_memo }}</td>
+                                            <td>{{ $memo->poliza }}</td>
+                                            <td>{{ $memo->vigencia_hasta }}</td>
+                                            <td>{{ $siniestro->nro_siniestro }}</td>
+                                            <td>{{ $siniestro->descripcion }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td>{{ $cliente->id_cliente }}</td>
+                                            <td>{{ $cliente->razon_social }}</td>
+                                            <td>{{ $cliente->codigo_cliente }}</td>
+                                            <td>{{ $memo->nro_memo }}</td>
+                                            <td>{{ $memo->poliza }}</td>
+                                            <td>{{ $memo->vigencia_hasta }}</td>
+                                            <td colspan="2" class="text-center">No hay siniestros</td>
+                                        </tr>
+                                    @endforelse
+                                @empty
+                                    <tr>
+                                        <td>{{ $cliente->id_cliente }}</td>
+                                        <td>{{ $cliente->razon_social }}</td>
+                                        <td>{{ $cliente->codigo_cliente }}</td>
+                                        <td colspan="5" class="text-center">No hay memos</td>
+                                    </tr>
+                                @endforelse
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="text-center">No hay clientes registrados.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
                 <div class="card-header">
                     <strong>Tarea 5. Visualización de Pagos </strong>
                     <br>
@@ -108,7 +240,108 @@
                 </div>
 
                 <div class="card-body">
-                    <br><br>
+                     <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID Cliente</th>
+                    <th>Razón Social</th>
+                    <th>Código Cliente</th>
+                    <th>Número de Memo</th>
+                    <th>Póliza</th>
+                    <th>Vigencia Hasta</th>
+                    <th>Número de Siniestro</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($clientesp4 as $cliente)
+                    @foreach ($cliente->memos as $memo)
+                        @foreach ($memo->siniestros as $siniestro)
+                            <tr>
+                                <td>{{ $cliente->id_cliente }}</td>
+                                <td>{{ $cliente->razon_social }}</td>
+                                <td>{{ $cliente->codigo_cliente }}</td>
+                                <td>
+                                    {{ $memo->nro_memo }}
+                                    <button class="btn btn-primary btn-sm view-pagos" data-memo-id="{{ $memo->id_memo }}">
+                                        Ver Pagos
+                                    </button>
+                                </td>
+                                <td>{{ $memo->poliza }}</td>
+                                <td>{{ $memo->vigencia_hasta }}</td>
+                                <td>{{ $siniestro->nro_siniestro }}</td>
+                                <td>{{ $siniestro->descripcion }}</td>
+                            </tr>
+                        @endforeach
+                    @endforeach
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+ 
+    <div class="modal fade" id="pagosModal" tabindex="-1" aria-labelledby="pagosModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pagosModalLabel">Pagos del Memo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID Pago</th>
+                                <th>Código de Pago</th>
+                                <th>Monto (US$)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pagosTableBody">
+                           
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.view-pagos').click(function() {
+                const memoId = $(this).data('memo-id');
+                const modal = new bootstrap.Modal(document.getElementById('pagosModal'));
+                $('#pagosTableBody').html('');
+                $.ajax({
+                    url: `/pagos/${memoId}`,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.length > 0) {
+                            response.forEach(function(pago) {
+                                $('#pagosTableBody').append(`
+                                    <tr>
+                                        <td>${pago.id_pago}</td>
+                                        <td>${pago.cod_pago}</td>
+                                        <td>${pago.monto_us}</td>
+                                    </tr>
+                                `);
+                            });
+                        } else {
+                            $('#pagosTableBody').append(`
+                                <tr>
+                                    <td colspan="3" class="text-center">No hay pagos registrados.</td>
+                                </tr>
+                            `);
+                        }
+                        modal.show();
+                    },
+                    error: function() {
+                        alert('Error al obtener los pagos.');
+                    }
+                });
+            });
+        });
+    </script>
+   
                 </div>
             </div>
         </div>
@@ -123,7 +356,11 @@
                     <strong>Tarea 6. Desplegar en texto cuantos pagos realizo el cliente 'TEODORO CALERO' y a que monto aciende la sumatoria de todos sus pagos</strong>
                 </div>
                 <div class="card-body">
-                    <br><br>
+                    <div class="mt-4">
+                        <h3>Resumen de Pagos para TEODORO CALERO</h3>
+                        <p><strong>Total de Pagos Realizados:</strong> {{ $totalPagos }}</p>
+                        <p><strong>Monto Total de Pagos (US$):</strong> ${{ number_format($sumaPagos, 2) }}</p>
+                    </div>
                 </div>
             </div>
         </div>
